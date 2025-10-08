@@ -1,0 +1,403 @@
+==================================================                ==================================================
+               DATA TYPES IN JAVA                                   DATA TYPES IN PYTHON
+==================================================                ==================================================
+
+Primitive Types                                                Built-in Types
+---------------                                                ----------------
+→ boolean                                                      → bool
+
+→ number                                                       → int
+   └──> Integer                                                → float
+   └──> Floating Point                                         → complex
+
+→ char                                                         → str (single character is a string of length 1)
+   - Unicode code as integer                                   - Strings are Unicode by default
+
+--------------------------------------------------              --------------------------------------------------
+Note:                                                          Note:
+Java handles I/O as byte or character streams.                 Python uses dynamic typing, no need to declare.
+These are converted into specific types.                       Input is typically taken using input().
+--------------------------------------------------              --------------------------------------------------
+
+
+
+
+
+==================================================                ==================================================
+        JAVA CLASSES THAT HANDLE INPUT                           PYTHON I/O METHODS
+==================================================                ==================================================
+
+[ Scanner ]                                                    [ input() ]
+ - Reads keyboard input                                        - Reads user input as string
+ - java.util package                                           - Cast to int/float if needed
+ - Constructor: Scanner(InputStream)                           Example: x = int(input("Enter a number: "))
+
+ - Methods:                                                    - No direct equivalent to nextInt(), nextLine()
+     • next()        → next token                              - Split input if needed using split()
+     • nextLine()    → full line
+     • nextInt()     → next int
+     • nextChar()    → workaround with charAt(0)
+
+[ BufferedReader ]                                             [ sys.stdin ]
+ - Efficient text input                                        - For faster or bulk input
+ - Needs InputStreamReader                                     import sys
+
+[ Console ]                                                    [ getpass.getpass() ]
+ - Secure input                                                - For secure password input
+
+[ InputStreamReader ]                                          [ open() for files ]
+ - Converts byte stream → char stream                          - Files can be read in binary or text mode
+
+
+
+
+
+
+==================================================                ==================================================
+            OOPS - CLASS CONCEPT                                       OOPS - CLASS CONCEPT
+==================================================                ==================================================
+
+A Class is like a 3-Compartment Box:                         A Class is a template for creating objects
+
+    +----------------------------+                                +----------------------------+
+    |          CLASS             |                                |          CLASS             |
+    +----------------------------+                                +----------------------------+
+    |  1. Name                   |                                |  1. Class Name             |
+    |  2. Static Attributes      |                                |  2. Attributes             |
+    |     (Fields / Variables)   |                                 |  3. Methods                |
+    |  3. Dynamic Behaviour      |                                +----------------------------+
+    |     (Methods / Functions)  |
+    +----------------------------+
+
+Java Example:                                                  Python Example:
+------------------                                             ------------------
+class Student {                                                class Student:
+    String name;                                                  def __init__(self, name):
+    int speed;                                                        self.name = name
+
+    String getName() {                                            def get_name(self):
+        return name;                                                  return self.name
+    }
+}
+
+Visibility Modifiers:                                          Python uses naming conventions:
+- private    → -:                                              • _name  → protected (by convention)
+- protected  → #:                                              • __name → private (name mangling)
+- public     → + or o                                          • name   → public (default)
+- default    → (no symbol)                                     • No enforced access control
+                                                                __init__ 
+
+--------------------------------------------------              --------------------------------------------------
+
+
+
+=========================================================     =========================================================
+               DATA ENCAPSULATION IN JAVA                           DATA ENCAPSULATION IN PYTHON
+=========================================================     =========================================================
+
+🔒 Definition:                                                🔒 Definition:
+Encapsulation is the concept of wrapping data (variables)    Encapsulation means restricting direct access to object
+and methods into a single unit (a class) and restricting     attributes and using methods (getters/setters) to access them.
+direct access from outside the class.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🔐 Achieved Using:                                            🔐 Achieved Using:
+- Access modifiers (`private`, `public`, `protected`)        - Naming conventions with underscores:
+- Getters and Setters                                          • `_name` → protected (convention)
+                                                               • `__name` → private (name mangling)
+                                                               • `name`   → public
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🧱 Java Example:                                               🐍 Python Example:
+---------------------------------------------------------     ---------------------------------------------------------
+class Student {                                               class Student:
+    private String name;                                         def __init__(self):
+    private int age;                                                 self.__name = "John"
+                                                                     self.__age = 18
+
+    // Getter                                                     def get_name(self):
+    public String getName() {                                         return self.__name;
+        return name;                                              def set_name(self, new_name):
+    }                                                                self.__name = new_name
+
+    // Setter
+    public void setName(String n) {
+        this.name = n;
+    }
+}
+
+Student s = new Student();                                   s = Student()
+s.setName("Alice");                                           s.set_name("Alice")
+System.out.println(s.getName());                             print(s.get_name())
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🔍 Summary:                                                  🔍 Summary:
+- Java uses access modifiers to fully enforce               - Python relies on naming conventions; access isn't strictly
+  encapsulation.                                               enforced but respected by convention.
+
+- Private fields cannot be accessed directly.               - Double underscore leads to name mangling (makes it harder
+                                                               to access directly, but still possible).
+
+=========================================================     =========================================================
+
+
+=========================================================     =========================================================
+            DATA ABSTRACTION IN PYTHON                              DATA ABSTRACTION IN JAVA
+=========================================================     =========================================================
+
+🧠 What is Abstraction?                                       🧠 What is Abstraction?
+Abstraction is the process of hiding complex                  Abstraction hides internal details and exposes
+implementation details and showing only                      only essential features of an object.
+the essential functionalities.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🔐 How it's done in Python:                                   🔐 How it's done in Java:
+- Using the `abc` module                                      - Using `abstract` classes and `interfaces`
+- `@abstractmethod` decorator                                 - `abstract` keyword
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🧱 Python Example:                                             🧱 Java Example:
+---------------------------------------------------------     ---------------------------------------------------------
+from abc import ABC, abstractmethod                         abstract class Animal {
+                                                               abstract void sound();
+
+class Animal(ABC):                                             void sleep() {
+    @abstractmethod                                                 System.out.println("Sleeping...");
+    def sound(self):                                                }
+        pass                                                   }
+
+class Dog(Animal):                                           class Dog extends Animal {
+    def sound(self):                                             void sound() {
+        print("Barks")                                               System.out.println("Barks");
+                                                               }
+d = Dog()                                                   }
+
+d.sound()      # Output: Barks                              public class Main {
+                                                           public static void main(String[] args) {
+                                                               Animal d = new Dog();
+                                                               d.sound();  // Output: Barks
+                                                           }}
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+📌 Summary:                                                  📌 Summary:
+- Python uses abstract base classes from `abc`              - Java uses abstract classes and interfaces
+  module to enforce abstraction.                              to enforce abstraction.
+
+- Cannot instantiate an abstract class.                     - Cannot instantiate an abstract class.
+
+=========================================================     =========================================================
+
+11-07-2025
+=========================================================     =========================================================
+               STATIC VS NON-STATIC (JAVA)                         STATIC VS NON-STATIC (PYTHON)
+=========================================================     =========================================================
+
+🧠 Concept:                                                  🧠 Concept:
+- `static` members belong to the class.                     - Python class variables act like static variables.
+- Non-static members belong to objects (instances).         - Instance variables are per object.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🔁 Shared vs Unique:                                         🔁 Shared vs Unique:
+- Static members are shared across all instances.           - Class variables are shared across all instances.
+- Non-static members are unique to each instance.           - Instance variables differ per object.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🧱 Java Example:                                             🐍 Python Example:
+---------------------------------------------------------     ---------------------------------------------------------
+class Student {
+    static int count = 0;
+    String name;
+
+    Student(String name) {
+        this.name = name;
+        count++;
+    }
+}
+
+System.out.println(Student.count);                          class Student:
+                                                                count = 0  # Class variable
+
+                                                            def __init__(self, name):
+                                                                self.name = name
+                                                                Student.count += 1
+
+print(Student.count)
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+📌 Summary:                                                  📌 Summary:
+- `static` keyword defines shared class-level members.      - Class variables behave like Java statics.
+- Access using ClassName.member                             - Access using ClassName.member
+
+=========================================================     =========================================================
+                         CONSTRUCTORS                                         CONSTRUCTORS
+=========================================================     =========================================================
+
+🛠️ What is a Constructor?                                  🛠️ What is a Constructor?
+- Special method invoked when an object is created.         - Special method: `__init__()` initializes object attributes.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🧱 Java Example:                                             🐍 Python Example:
+---------------------------------------------------------     ---------------------------------------------------------
+class Student {
+    String name;
+
+    // Constructor
+    Student(String n) {
+        name = n;
+    }
+}
+
+Student s = new Student("Alice");                           class Student:
+                                                                def __init__(self, name):
+                                                                    self.name = name
+
+                                                            s = Student("Alice")
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+📌 Summary:                                                  📌 Summary:
+- Java constructors have the same name as the class.        - Python uses `__init__` for constructors.
+- No return type (not even void).                           - `__init__()` is automatically called on object creation.
+
+static is run time Binidng or compile time Binidng
+--> are binded at compile time
+
+is java supports multiple inheritance directly or indirectly
+
+
+
+=========================================================     =========================================================
+                    INHERITANCE IN JAVA                                INHERITANCE IN PYTHON
+=========================================================     =========================================================
+
+🧠 What is Inheritance?                                    🧠 What is Inheritance?
+Allows a class to inherit properties                       Allows a class to inherit attributes and
+and methods from another class.                            methods from another class.
+
+Supports code reuse and hierarchy.                         Promotes reusability and modularity.
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+📌 Terminology:                                              📌 Terminology:
+Superclass  → Parent class                                  Base class  → Parent class  
+Subclass    → Child class                                   Derived class → Child class
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+🧱 Java Syntax:                                              🧱 Python Syntax:
+---------------------------------------------------------     ---------------------------------------------------------
+class Parent {                                              class Parent:
+    void greet() {                                              def greet(self):
+        System.out.println("Hello from Parent");                    print("Hello from Parent");
+    }                                                         
+
+}                                                           class Child(Parent):
+                                                               def greet_child(self):
+class Child extends Parent {                                       print("Hello from Child");
+    void greetChild() {
+        System.out.println("Hello from Child");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child obj = new Child();
+        obj.greet();         // inherited
+        obj.greetChild();    // own
+    }
+}                                                           obj = Child()
+                                                            obj.greet()         # inherited
+                                                            obj.greet_child()   # own
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+👨‍👩‍👧‍👦 Types of Inheritance:                                  👨‍👩‍👧‍👦 Types of Inheritance:
+---------------------------------------------------------     ---------------------------------------------------------
+1. Single Inheritance                                       1. Single Inheritance
+2. Multilevel Inheritance                                   2. Multilevel Inheritance
+3. Hierarchical Inheritance                                 3. Hierarchical Inheritance
+4. Hybrid (via interfaces)                                  4. Multiple Inheritance
+                                                            5. Hybrid Inheritance
+
+🔴 Java does **not** support multiple inheritance            ✅ Python supports multiple inheritance
+   using classes (only via interfaces).                        directly with MRO (Method Resolution Order).
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+📝 Multiple Inheritance (Java → via interfaces)             📝 Multiple Inheritance (Python)
+---------------------------------------------------------     ---------------------------------------------------------
+interface A {                                               class A:
+    void methodA();                                             def showA(self):
+                                                                    print("From A")
+
+interface B {                                               class B:
+    void methodB();                                             def showB(self):
+                                                                    print("From B")
+
+class C implements A, B {                                   class C(A, B):
+    public void methodA() {                                     pass
+        System.out.println("A");
+    }
+
+    public void methodB() {
+        System.out.println("B");
+    }
+}
+
+C obj = new C();                                            obj = C()
+obj.methodA();                                              obj.showA()
+obj.methodB();                                              obj.showB()
+
+---------------------------------------------------------     ---------------------------------------------------------
+
+✅ Summary:                                                 ✅ Summary:
+- Java uses `extends` for single inheritance               - Python supports multiple inheritance directly.
+- Multiple inheritance is achieved via `interfaces`.       - Python uses MRO to resolve method conflicts.
+- Promotes clean, modular design.                          - Flexible but must be used carefully.
+
+=========================================================     =========================================================
+
+
+NESTED Try Catch::
+
+
+
+Array:
+without array the maintanence of the programe becomes un predictable
+
+
+Jagged arrays
+
+
+
+
+skeleton class
+
+i,j = map(int,input().split())
+
+
+
+
+
+dead Lock
+
+1.philoshper
+2.producer-consumer problem
+
+in data base too many transactions try to access the data
+no exclusive no preamption
+synchronization leads to deadlock
+
+
+JDBC
+

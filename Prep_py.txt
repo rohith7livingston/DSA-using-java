@@ -1,0 +1,10 @@
+https://www.geeksforgeeks.org/python/introduction-to-python/
+
+✅ 1. Compile-Time
+
+Definition: Compile-time is the phase when the source code is translated by the compiler into machine code (or bytecode) before the program runs
+
+2. Run-Time
+
+Definition: Run-time refers to the period when the compiled program is executed (after compilation). The computer performs the program’s instructions in real-time.
+Christ is King
